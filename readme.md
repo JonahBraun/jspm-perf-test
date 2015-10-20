@@ -1,8 +1,8 @@
-A simple jspm + React repository to test performance of loading many JS files.
+A simple jspm + Babel + React repository to test performance of loading many JS files.
 
-I'm using [Wago](https://github.com/JonahBraun/wago) to serve files over HTTP and HTTP2 and measuring from [PerformanceTiming.fetchStart](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming).
+I'm using  to serve files over HTTP and HTTP2 and measuring from [PerformanceTiming.fetchStart](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceTiming).
 
-Wago command (run from repository root): `wago -dir public -http :8420 -h2 :8421`
+[Wago](https://github.com/JonahBraun/wago) was used for testing as it implements the standard Go HTTP and HTTP2 libraries.
 
 In Chrome on MacOSX, the following numbers were obtained by performing a hard refresh (cmd-shift-r) many times in a row and reporting the typical range.
 
@@ -17,6 +17,14 @@ In Chrome on MacOSX, the following numbers were obtained by performing a hard re
 **Developer Tools open to Network tab**
 - http: 3970-4196ms
 - h2: 4070-4206ms
+
+Caddy was tested and the numbers fell within the above ranges.
+Browsersync was tested and was 30-200ms slower than the above ranges.
+
+Web server commands (run from the public dir):
+- [Wago](https://github.com/JonahBraun/wago):  `wago -http :8420 -h2 :8421`
+- [Caddy](https://caddyserver.com/): `caddy`
+- [Browsersync](http://www.browsersync.io/): `browser-sync start --server`
 
 ### Conclusions
 
