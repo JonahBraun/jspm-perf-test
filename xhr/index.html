@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>xhr perf test</title>
+</head>
+
+<body>
+<div id='result'></div>
+<script>
+
+var url = 'http://127.0.0.1:10808/blob.js';
+var fetches = 165;
+
+var report = function(){
+	document.getElementById('result').textContent =
+		"Time from fetchStart: " +
+		(Date.now()-performance.timing.fetchStart).toString() + "ms";
+}
+
+var synchronous = function(i){
+	var oReq = new XMLHttpRequest();
+	oReq.addEventListener("load", function(){
+		if(i==fetches){
+			report();
+			return
+		}
+		synchronous(++i);
+	});
+	oReq.open("GET", url);
+	oReq.send();
+}
+
+var parallel = function(){
+	for(var i = 0; i < 200; i++){
+		var oReq = new XMLHttpRequest();
+		oReq.open("GET", url);
+		oReq.send();
+	}
+	report();
+}
+
+synchronous(0);
+
+</script>
+</body>
+</html>
+
